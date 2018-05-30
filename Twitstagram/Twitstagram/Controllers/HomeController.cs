@@ -8,23 +8,26 @@ namespace Twitstagram.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+
+    public ActionResult Index()
         {
+
+            var twitter = new Twitter.Twitter("4rNfhgUrI6yklSBVhmU3U1F8q", "kYsjQzU7QVof9USCQHucFi3p2ox61q2GxNVYcDSzTiBzu0C0vT", "1001781311051390978-Tj0aXHjC3GSuqGFde9AFp6z9Wjp4i2", "BxYSpsScwSW9oxMIozpYpNv7efJhXIihvXduGgUU32S3K");
+
+            //twitter.PostStatusUpdate(status, 54.35,-0.2);
+            var response = twitter.GetTweets("romybos_", 5);
+
+            dynamic timeline = System.Web.Helpers.Json.Decode(response);
+
+            foreach (var tweet in timeline)
+            {
+                string text = timeLineMention["text"].ToString();
+                Models.Home.TimeLine.Add(text);
+            }
+
             return View();
-        }
+        }  
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
     }
+
 }
