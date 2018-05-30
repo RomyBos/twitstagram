@@ -1,9 +1,10 @@
-﻿namespace Twitstagram.Models
+﻿using System.Collections.Generic;
+
+namespace Twitstagram.Models
 {
     public class Home
     {
-        public int Id { get; set;  }
 
-        public string Name { get; set;  }
+        public List<string> TimeLine { get; set; }
     }
 }
