@@ -1,52 +1,40 @@
 ﻿@model Twitstagram.Models.Home
 @{
     ViewBag.Title = "Home Page";
-
-
 }
 
+<!DOCTYPE html>
+<html>
 
+<head>
+    <title>Twitstagram</title>
+</head>
+<body>
 <div class="jumbotron">
     <h1>Twitstagram</h1>
-    <p class="lead">On this website you will be able to see twitter and instagram feed!</p>
+    <p class="lead">Op deze website ben je in staat om twitter en instagram feed te zien!</p>
 </div>
 
 <div class="row">
-    <div class="col-md-6">
-        <h2>Twitter</h2>
-
-        @using (Html.BeginForm())
-        {
-        <div class="form-group">
-            <label class="col-form-label col-form-label-lg" for="inputLarge">Twitter UserName:</label>
-            <input class="form-control form-control-lg" type="text" placeholder="bv. bencom_group" id="inputLarge">
-
-            <label class="col-form-label col-form-label-lg" for="inputLarge">Amount of tweets:</label>
-            <input class="form-control form-control-lg" type="text" placeholder="bv. 5" id="inputLarge">
-            <p></p>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-        }
-        @{
-            foreach (dynamic tweet in ViewBag.Message)
-            {
-                <div class="card border-primary mb-3" style="max-width: 20rem;">
-                    <div class="card-header">Tweet</div>
-                    <div class="card-body">
-                        <h4 class="card-title">@ViewBag.Header</h4>
-                        <p class="card-text">
-                            @tweet
-                        </p>
-                    </div>
-                </div>
-            }
-        }
-    </div>
-    <div class="col-md-6">
-        <h2>Instagram</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
+    <div class="col-md-4">
+        <h2>Twitter Timeline</h2>
         <p>
-            <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a>
+            @Html.Partial("UserTimeLine", Model)
+        </p>
+        
+    </div>
+    <div class="col-md-4">
+        <h2>Twitter search</h2>
+        <p>
+            @Html.Partial("TwitterSearch", Model)
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2>Instagram</h2>
+        <p>
+            Dit deel is nog work in progress!
         </p>
     </div>
 </div>
+</body>
+</html>
