@@ -1,8 +1,10 @@
-﻿@{
+﻿@model Twitstagram.Models.Home
+@{
     ViewBag.Title = "Home Page";
 
 
 }
+
 
 <div class="jumbotron">
     <h1>Twitstagram</h1>
@@ -12,13 +14,33 @@
 <div class="row">
     <div class="col-md-6">
         <h2>Twitter</h2>
-        <div class="card border-primary mb-3" style="max-width: 20rem;">
-            <div class="card-header">Tweets</div>
-            <div class="card-body">
-                <h4 class="card-title">@ViewBag.Header</h4>
-                <p class="card-text">@ViewBag.Message</p>
-            </div>
+
+        @using (Html.BeginForm())
+        {
+        <div class="form-group">
+            <label class="col-form-label col-form-label-lg" for="inputLarge">Twitter UserName:</label>
+            <input class="form-control form-control-lg" type="text" placeholder="bv. bencom_group" id="inputLarge">
+
+            <label class="col-form-label col-form-label-lg" for="inputLarge">Amount of tweets:</label>
+            <input class="form-control form-control-lg" type="text" placeholder="bv. 5" id="inputLarge">
+            <p></p>
+            <button type="submit" class="btn btn-primary">Submit</button>
         </div>
+        }
+        @{
+            foreach (dynamic tweet in ViewBag.Message)
+            {
+                <div class="card border-primary mb-3" style="max-width: 20rem;">
+                    <div class="card-header">Tweet</div>
+                    <div class="card-body">
+                        <h4 class="card-title">@ViewBag.Header</h4>
+                        <p class="card-text">
+                            @tweet
+                        </p>
+                    </div>
+                </div>
+            }
+        }
     </div>
     <div class="col-md-6">
         <h2>Instagram</h2>
