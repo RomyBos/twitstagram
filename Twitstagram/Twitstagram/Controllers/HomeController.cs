@@ -7,13 +7,13 @@ using System.Web.Mvc;
 using Newtonsoft.Json.Linq;
 using Twitstagram.Models;
 
+
 namespace Twitstagram.Controllers
 {
     public class HomeController : Controller
     {
         public ActionResult Index()
         {
-
             return View();
         }
 
@@ -25,27 +25,25 @@ namespace Twitstagram.Controllers
                 "1001781311051390978-Tj0aXHjC3GSuqGFde9AFp6z9Wjp4i2",
                 "BxYSpsScwSW9oxMIozpYpNv7efJhXIihvXduGgUU32S3K");
 
-            string p = "bencom";
+            string q = "bencom";
 
-            List<string> TimeLineSearch = new List<string>();
-            var response = twitter.SearchTweets(p);
+            List<string> timeLine = new List<string>();
+            var response = twitter.SearchTweets(q);
 
-            dynamic timelinesearch = System.Web.Helpers.Json.Decode(response);
-            //            user = form["username"].ToString();
+            dynamic tweets = System.Web.Helpers.Json.Decode(response);
 
-            foreach (dynamic tweet in timelinesearch)
+            foreach (dynamic tweet in tweets)
             {
                 string text = tweet.text;
-                TimeLineSearch.Add(text);
+                timeLine.Add(text);
             }
 
 
-            ViewBag.Header = p;
-            ViewBag.Message = (TimeLineSearch);
+            ViewBag.Header = q;
+            ViewBag.Message = (timeLine);
 
             return View();
         }
-
 
 
         // GET: UserTimeLine
@@ -59,24 +57,30 @@ namespace Twitstagram.Controllers
                 "BxYSpsScwSW9oxMIozpYpNv7efJhXIihvXduGgUU32S3K");
 
             string user = "bencom_group";
-            var response = twitter.GetTweets(user, 5);
+            int count = 5;
+            var response = twitter.GetTweets(user, count);
 
-            List<string> TimeLine = new List<string>();
+
+            List<string> timeLine = new List<string>();
 
             dynamic timeline = System.Web.Helpers.Json.Decode(response);
             //            user = form["username"].ToString();
+            var homeModel = new Home()
+            {
+               TimeLine = timeLine
+            };
 
             foreach (dynamic tweet in timeline)
             {
                 string text = tweet.text;
-                TimeLine.Add(text);
+                timeLine.Add(text);
             }
 
 
             ViewBag.Header = "@" + user;
-            ViewBag.Message = (TimeLine);
 
-            return View();
+
+            return View(homeModel);
         }
         //        [HttpPost]
         //        public ActionResult Index(FormCollection form)
@@ -84,8 +88,5 @@ namespace Twitstagram.Controllers
 
 
         //        }
-
     }
-
-
 }

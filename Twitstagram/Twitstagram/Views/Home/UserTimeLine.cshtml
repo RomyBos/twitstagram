@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Twitstagram.Models.Home
+@{
     ViewBag.Title = "UserTimeLine";
 
 }
@@ -9,7 +10,7 @@
 
 </head>
 <body>
-
+<div>
 @using (Html.BeginForm())
 {
     <div class="form-group">
@@ -23,8 +24,7 @@
     </div>
 }
 @{
-    foreach (dynamic tweet in ViewBag.Message)
-    {
+    foreach (dynamic tweet in @Model.TimeLine) { 
         <div class="card border-primary mb-3" style="max-width: 20rem;">
             <div class="card-header">Tweet</div>
             <div class="card-body">
@@ -36,5 +36,6 @@
         </div>
     }
 }
+</div>
 </body>
 </html>

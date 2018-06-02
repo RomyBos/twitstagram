@@ -196,6 +196,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\TwitterSearch.cshtml" />
     <Content Include="Views\Home\UserTimeLine.cshtml" />
+    <Content Include="Views\Shared\_NavBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
