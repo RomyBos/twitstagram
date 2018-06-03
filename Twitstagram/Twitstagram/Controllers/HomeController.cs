@@ -17,39 +17,41 @@ namespace Twitstagram.Controllers
             return View();
         }
 
-        // GET: TwitterSearch
-        public ActionResult TwitterSearch()
+        public ActionResult UserLikes()
         {
             var twitter = new Twitter.Twitter("4rNfhgUrI6yklSBVhmU3U1F8q",
                 "kYsjQzU7QVof9USCQHucFi3p2ox61q2GxNVYcDSzTiBzu0C0vT",
                 "1001781311051390978-Tj0aXHjC3GSuqGFde9AFp6z9Wjp4i2",
                 "BxYSpsScwSW9oxMIozpYpNv7efJhXIihvXduGgUU32S3K");
 
-            string q = "bencom";
-
-            List<string> timeLine = new List<string>();
-            var response = twitter.SearchTweets(q);
-
+            string user = "gaslicht_com";
+            int count = 5;
+            var response = twitter.UserLikes(user, count);
+            List<string> likes = new List<string>();
             dynamic tweets = System.Web.Helpers.Json.Decode(response);
+
+            var homeModel = new Home()
+            {
+                Likes = likes
+            };
 
             foreach (dynamic tweet in tweets)
             {
                 string text = tweet.text;
-                timeLine.Add(text);
+                likes.Add(text);
             }
 
 
-            ViewBag.Header = q;
-            ViewBag.Message = (timeLine);
+            ViewBag.Header = "@" + user;
 
-            return View();
+            return View(homeModel);
         }
 
 
-        // GET: UserTimeLine
         public ActionResult UserTimeLine()
         {
-            //TODO: Fix input form so user can search for user and amount, insteadc of hardcoded.
+            //TODO: Fix input form so user can search for user and amount, instead of hardcoded.
+
 
             var twitter = new Twitter.Twitter("4rNfhgUrI6yklSBVhmU3U1F8q",
                 "kYsjQzU7QVof9USCQHucFi3p2ox61q2GxNVYcDSzTiBzu0C0vT",
@@ -59,15 +61,13 @@ namespace Twitstagram.Controllers
             string user = "bencom_group";
             int count = 5;
             var response = twitter.GetTweets(user, count);
-
-
             List<string> timeLine = new List<string>();
 
             dynamic timeline = System.Web.Helpers.Json.Decode(response);
-            //            user = form["username"].ToString();
+
             var homeModel = new Home()
             {
-               TimeLine = timeLine
+                TimeLine = timeLine
             };
 
             foreach (dynamic tweet in timeline)
@@ -76,17 +76,33 @@ namespace Twitstagram.Controllers
                 timeLine.Add(text);
             }
 
-
             ViewBag.Header = "@" + user;
-
 
             return View(homeModel);
         }
-        //        [HttpPost]
-        //        public ActionResult Index(FormCollection form)
-        //        {
 
+        //TODO: DRY, remove repeating parts.
+        /*void GetTweetResults()
+        {
+            var twitter = new Twitter.Twitter("4rNfhgUrI6yklSBVhmU3U1F8q",
+                "kYsjQzU7QVof9USCQHucFi3p2ox61q2GxNVYcDSzTiBzu0C0vT",
+                "1001781311051390978-Tj0aXHjC3GSuqGFde9AFp6z9Wjp4i2",
+                "BxYSpsScwSW9oxMIozpYpNv7efJhXIihvXduGgUU32S3K");
 
-        //        }
+            List<string> timeLine = new List<string>();
+
+            dynamic timeline = System.Web.Helpers.Json.Decode(response);
+            //            user = form["username"].ToString();
+            var homeModel = new Home()
+            {
+                TimeLine = timeLine
+            };
+
+            foreach (dynamic tweet in timeline)
+            {
+                string text = tweet.text;
+                timeLine.Add(text);
+            }
+        }*/
     }
 }

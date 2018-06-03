@@ -40,12 +40,13 @@ namespace Twitstagram.Twitter
             return response;
         }
 
-        public string SearchTweets(string q)
+        public string UserLikes(string screenName, int count)
         {
-            string resourceUrl = string.Format("https://api.twitter.com/1.1/search/tweets.json");
+            string resourceUrl = string.Format("https://api.twitter.com/1.1/favorites/list.json");
 
             SortedDictionary<string, string> requestParameters = new SortedDictionary<string, string>();
-            requestParameters.Add("q", q);
+            requestParameters.Add("count", count.ToString());
+            requestParameters.Add("screen_name", screenName);
 
             var response = GetResponse(resourceUrl, Method.GET, requestParameters);
 
@@ -78,10 +79,6 @@ namespace Twitstagram.Twitter
                 request = (HttpWebRequest)WebRequest.Create(resourceUrl + "?" + requestParameters.ToWebString());
                 request.Method = method.ToString();
             }
-            else
-            {
-                //other verbs can be addressed here...
-            }
 
             if (request != null)
             {
@@ -107,12 +104,10 @@ namespace Twitstagram.Twitter
         private string CreateHeader(string resourceUrl, Method method, SortedDictionary<string, string> requestParameters)
         {
             var oauthNonce = CreateOauthNonce();
-            // Convert.ToBase64String(new ASCIIEncoding().GetBytes(DateTime.Now.Ticks.ToString()));
             var oauthTimestamp = CreateOAuthTimestamp();
             var oauthSignature = CreateOauthSignature
             (resourceUrl, method, oauthNonce, oauthTimestamp, requestParameters);
 
-            //The oAuth signature is then used to generate the Authentication header. 
             const string headerFormat = "OAuth oauth_nonce=\"{0}\", oauth_signature_method =\"{1}\", " +"oauth_timestamp=\"{2}\", oauth_consumer_key =\"{3}\", " +"oauth_token=\"{4}\",  oauth_signature =\"{5}\", " + "oauth_version=\"{6}\"";
 
             var authHeader = string.Format(headerFormat, Uri.EscapeDataString(oauthNonce), Uri.EscapeDataString(OauthSignatureMethod), Uri.EscapeDataString(oauthTimestamp), Uri.EscapeDataString(ConsumerKey), Uri.EscapeDataString(AccessToken), Uri.EscapeDataString(oauthSignature), Uri.EscapeDataString(OauthVersion));
@@ -123,7 +118,6 @@ namespace Twitstagram.Twitter
         private string CreateOauthSignature
         (string resourceUrl, Method method, string oauthNonce, string oauthTimestamp, SortedDictionary<string, string> requestParameters)
         {
-            //firstly we need to add the standard oauth parameters to the sorted list
             requestParameters.Add("oauth_consumer_key", ConsumerKey);
             requestParameters.Add("oauth_nonce", oauthNonce);
             requestParameters.Add("oauth_signature_method", OauthSignatureMethod);
@@ -137,8 +131,6 @@ namespace Twitstagram.Twitter
             (method.ToString(), "&", Uri.EscapeDataString(resourceUrl), "&",
                                 Uri.EscapeDataString(sigBaseString.ToString()));
 
-            //Using this base string, we then encrypt the data using a composite of the 
-            //secret keys and the HMAC-SHA1 algorithm.
             var compositeKey = string.Concat(Uri.EscapeDataString(ConsumerKeySecret), "&",
                                              Uri.EscapeDataString(AccessTokenSecret));
 

@@ -7,5 +7,7 @@ namespace Twitstagram.Models
         public List<string> TimeLine { get; set; }
 
         public string UserName { get; set; }
+
+        public List<string> Likes { get; set; }
     }
 }
